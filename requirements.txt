@@ -1,0 +1,4 @@
+dash[dev]>=2.5.1
+dash-chat-components
+langchain
+openai
