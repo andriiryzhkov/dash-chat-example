@@ -81,6 +81,12 @@ def send_message(n_submit, n_submit_timestamp, value_on_submit, msg_list):
                 timestamp=n_submit_timestamp
             )
         )
+        msg_list.append(
+            dch.ChatMessageTyping(
+                avatar="bot.png",
+                direction="received",
+            )
+        )
     
         return msg_list, True, True
 
@@ -92,11 +98,12 @@ def send_message(n_submit, n_submit_timestamp, value_on_submit, msg_list):
     State("chat-input", "value_on_submit"),
     State("chat-msg-list", "children"), prevent_initial_call=True)
 def reply_message(children, value_on_submit, msg_list):
-    last_message = children[-1]["props"]
+    last_message = children[-2]["props"]
     if last_message["direction"] != "outgoing":
         raise PreventUpdate
     else:
         ai_response = process_chat_message(value_on_submit)
+        msg_list.pop()
         msg_list.append(
             dch.ChatMessage(
                 ai_response,
